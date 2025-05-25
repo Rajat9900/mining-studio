@@ -1,8 +1,8 @@
 import {defineField, defineType} from 'sanity'
 
 export default defineType({
-  name: 'news',
-  title: 'News',
+  name: 'latestMedia',
+  title: 'Latest Media',
   type: 'document',
   fields: [
     defineField({
@@ -40,8 +40,37 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'bannerImage',
-      title: 'Banner Image',
+      name: 'mediaType',
+      title: 'Media Type',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'YouTube Video', value: 'youtube'},
+          {title: 'Uploaded Video', value: 'upload'},
+        ],
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'youtubeUrl',
+      title: 'YouTube URL',
+      type: 'url',
+      description: 'Paste the YouTube video URL here',
+      hidden: ({document}) => document?.mediaType !== 'youtube',
+    }),
+    defineField({
+      name: 'videoFile',
+      title: 'Video File',
+      type: 'file',
+      options: {
+        accept: 'video/*'
+      },
+      description: 'Upload a video file',
+      hidden: ({document}) => document?.mediaType !== 'upload',
+    }),
+    defineField({
+      name: 'thumbnail',
+      title: 'Thumbnail Image',
       type: 'image',
       options: {
         hotspot: true,
@@ -54,12 +83,6 @@ export default defineType({
         },
       ],
       validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'hyperlink',
-      title: 'Hyperlink',
-      type: 'url',
-      description: 'External link for the news article',
     }),
     defineField({
       name: 'country',
@@ -79,7 +102,7 @@ export default defineType({
       name: 'isActive',
       title: 'Active',
       type: 'boolean',
-      description: 'Whether this news is active',
+      description: 'Whether this media is active',
       initialValue: true,
     }),
     defineField({
@@ -99,7 +122,7 @@ export default defineType({
     select: {
       title: 'title',
       subtitle: 'shortDescription',
-      media: 'bannerImage',
+      media: 'thumbnail',
     },
   },
 }) 
