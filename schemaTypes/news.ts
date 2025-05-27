@@ -25,6 +25,52 @@ export default defineType({
       of: [
         {
           type: 'block',
+          marks: {
+            decorators: [
+              {title: 'Strong', value: 'strong'},
+              {title: 'Emphasis', value: 'em'},
+              {title: 'Code', value: 'code'},
+              {title: 'Underline', value: 'underline'},
+              {title: 'Strike', value: 'strike-through'},
+            ],
+            annotations: [
+              {
+                name: 'link',
+                type: 'object',
+                title: 'Link',
+                fields: [
+                  {
+                    name: 'href',
+                    type: 'url',
+                    title: 'URL',
+                  },
+                ],
+              },
+            ],
+          },
+        },
+        {
+          type: 'object',
+          name: 'htmlBlock',
+          title: 'HTML Block',
+          fields: [
+            {
+              name: 'html',
+              type: 'text',
+              title: 'HTML Content',
+              rows: 10,
+            },
+          ],
+          preview: {
+            select: {
+              title: 'html',
+            },
+            prepare({title}) {
+              return {
+                title: title ? title.substring(0, 50) + '...' : 'HTML Block',
+              }
+            },
+          },
         },
         {
           type: 'image',
