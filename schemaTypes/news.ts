@@ -1,5 +1,7 @@
 import {defineField, defineType} from 'sanity'
 
+import TinyMCEEditor from '../components/QuillEditor'
+
 export default defineType({
   name: 'news',
   title: 'News',
@@ -21,68 +23,12 @@ export default defineType({
     defineField({
       name: 'longDescription',
       title: 'Long Description',
-      type: 'array',
-      of: [
-        {
-          type: 'block',
-          marks: {
-            decorators: [
-              {title: 'Strong', value: 'strong'},
-              {title: 'Emphasis', value: 'em'},
-              {title: 'Code', value: 'code'},
-              {title: 'Underline', value: 'underline'},
-              {title: 'Strike', value: 'strike-through'},
-            ],
-            annotations: [
-              {
-                name: 'link',
-                type: 'object',
-                title: 'Link',
-                fields: [
-                  {
-                    name: 'href',
-                    type: 'url',
-                    title: 'URL',
-                  },
-                ],
-              },
-            ],
-          },
-        },
-        {
-          type: 'object',
-          name: 'htmlBlock',
-          title: 'HTML Block',
-          fields: [
-            {
-              name: 'html',
-              type: 'text',
-              title: 'HTML Content',
-              rows: 10,
-            },
-          ],
-          preview: {
-            select: {
-              title: 'html',
-            },
-            prepare({title}) {
-              return {
-                title: title ? title.substring(0, 50) + '...' : 'HTML Block',
-              }
-            },
-          },
-        },
-        {
-          type: 'image',
-          fields: [
-            {
-              type: 'text',
-              name: 'alt',
-              title: 'Alternative Text',
-            },
-          ],
-        },
-      ],
+      type: 'string',
+      // of: [{type: 'block'}],
+      
+      components: {
+        input: TinyMCEEditor
+      },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -102,12 +48,6 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'hyperlink',
-      title: 'Hyperlink',
-      type: 'url',
-      description: 'External link for the news article',
-    }),
-    defineField({
       name: 'country',
       title: 'Country',
       type: 'reference',
@@ -117,8 +57,8 @@ export default defineType({
     defineField({
       name: 'category',
       title: 'Category',
-      type: 'array',
-      of: [{type: 'reference', to: [{type: 'category'}]}],
+      type: 'reference',
+      to: [{type: 'category'}],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
