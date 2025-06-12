@@ -48,18 +48,24 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'country',
-      title: 'Country',
+      name: 'company',
+      title: 'Company',
       type: 'reference',
-      to: [{type: 'country'}],
+      to: [{type: 'company'}],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'category',
       title: 'Category',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'category'}]}],
-      validation: (Rule) => Rule.required(),
+      of: [{
+        type: 'reference',
+        to: [{type: 'category'}]
+      }],
+      validation: (Rule) => Rule.required().min(1),
+      options: {
+        layout: 'tags'
+      }
     }),
     defineField({
       name: 'isActive',
